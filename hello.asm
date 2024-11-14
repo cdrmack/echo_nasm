@@ -10,3 +10,7 @@ _start:
 	mov	rsi, msg	; address of the message to write
 	mov	rdx, 15		; message length
 	syscall
+
+	mov	rax, 1		; exit syscall
+	mov	rdi, 0		; exit code 0
+	syscall
