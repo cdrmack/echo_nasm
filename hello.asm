@@ -14,16 +14,12 @@ section .text
     global  _start
 
 _start:
-    mov     rax, msg            ; move the address of msg into rax
-    call    strlen
-
-    mov     rdx, rax            ; strlen leaves the result inside rax, we need it inside rdx for the syscall
-    mov     rax, 4              ; write syscall
-    mov     rdi, 1              ; file descriptor of standard output
-    mov     rsi, msg            ; address of the message to write
-    syscall
-
+    mov     rax, msg1
+    call    sprint
+    mov     rax, msg2
+    call    sprint
     call    exit
 
 section .data
-    msg     db  'hello, world!', 10, 0
+    msg1    db  'hello, world!', 10, 0
+    msg2    db  'bye, world!', 10, 0
