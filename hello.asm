@@ -8,9 +8,10 @@
 ;;; rdi, rsi, rdx, r10, r8, r9
 ;;; Syscall number is placed in rax.
 
+%include    'functions.asm'
 
 section .text
-global  _start
+    global  _start
 
 _start:
     mov     rax, msg            ; move the address of msg into rax
@@ -22,26 +23,7 @@ _start:
     mov     rsi, msg            ; address of the message to write
     syscall
 
-    mov     rax, 1              ; exit syscall
-    mov     rdi, 0              ; exit code 0
-    syscall
-
-strlen:
-    push    rbx                 ; push the value in rbx onto the stack to preserve it while we use rbx inside this function
-    mov     rbx, rax            ; move the address in rax into rbx
-
-nextchar:
-    cmp     byte [rax], 0       ; compare the byte pointed to by rax at this address against zero
-    jz      finished            ; jump to `finished` if the zero flagged is set
-    inc     rax
-    jmp     nextchar
-
-finished:
-    sub     rax, rbx            ; subtract the address in rbx from the address in rax
-                                ; the result is number of segments between them
-                                ; stored inside rax
-    pop     rbx                 ; pop the value on the stack back into rbx
-    ret                         ; return to where the function was called
+    call    exit
 
 section .data
-msg     db       'hello, world!', 10, 0
+    msg     db  'hello, world!', 10, 0
