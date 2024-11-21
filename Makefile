@@ -1,9 +1,9 @@
 EXE = hello
-SOURCES = hello.asm
+SOURCES = hello.asm functions.asm
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 
 %.o:%.asm
-	nasm -f elf64 -o $@ $<
+	nasm -g -f elf64 -o $@ $<
 
 all: $(EXE)
 	@echo $(EXE) build complete

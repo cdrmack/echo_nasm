@@ -15,11 +15,13 @@ section .text
 
 _start:
     mov     rax, msg1
-    call    sprint
+    call    sprintlf
+
     mov     rax, msg2
-    call    sprint
+    call    sprintlf
+
     call    exit
 
 section .data
-    msg1    db  'hello, world!', 10, 0
-    msg2    db  'bye, world!', 10, 0
+    msg1    db  'hello, world!', 0
+    msg2    db  'bye, world!', 0

@@ -23,20 +23,36 @@ sprint:
     push    rdx
     push    rdi
     push    rsi
-
     push    rax
     call    slen                ; slen stores the result inside rax, we need to save it
+
     mov     rdx, rax            ; rdx now stores length of the string
     pop     rax
 
     mov     rsi, rax            ; address of the message to write
-    mov     rax, 4              ; write syscall
     mov     rdi, 1              ; file descriptor of standard output
+    mov     rax, 4              ; write syscall
     syscall
 
     pop     rsi
     pop     rdi
     pop     rdx
+    ret
+
+;;; print string with line feed
+;;; expects address of string in rax
+sprintlf:
+    call    sprint
+
+    push    rax                 ; store original rax
+    mov     rax, 10             ; 10 is the ascii character for a line feed
+    push    rax                 ; push the line feed onto the stack so we can get the address
+
+    mov     rax, rsp            ; address of the message to write, rsp is a stack pointer
+    call    sprint
+
+    pop     rax                 ; remove line feed from the stack
+    pop     rax                 ; restore original rax
     ret
 
 ;;; exit program
