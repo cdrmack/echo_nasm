@@ -11,17 +11,21 @@
 %include    'functions.asm'
 
 section .text
-    global  _start
+global  _start
 
 _start:
-    mov     rax, msg1
-    call    sprintlf
+    pop     rcx                 ; store number of arguments inside rcx
 
-    mov     rax, msg2
-    call    sprintlf
+nextarg:
+    cmp     rcx, 0              ; check if we have 0 arguments
+    jz      nomoreargs          ; finish if there are no more arguments
 
+    pop     rax                 ; pop next argument
+    push    rcx                 ; save just in case
+    call    sprintlf            ; print argument with the line feed
+    pop     rcx                 ; restore rcx
+    dec     rcx                 ; decrease number of arguments
+    jmp     nextarg             ; repeat
+
+nomoreargs:
     call    exit
-
-section .data
-    msg1    db  'hello, world!', 0
-    msg2    db  'bye, world!', 0
