@@ -14,7 +14,20 @@ section .text
 global  _start
 
 _start:
-    pop     rcx                 ; store number of arguments inside rcx
+    ;; there might be some rsp alignment going on
+    ;; argc migh be at [rsp] or [rsp+8]
+    ;; I assume it was aligned if rsp stores 0 or a "big" number
+    pop     rcx
+    cmp     rcx, 0
+    jz      aligned
+
+    cmp     rcx, 10
+    jg      aligned             ; if greater than 10 then I assume it's garbage
+
+    jmp     nextarg
+
+aligned:
+    pop     rcx
 
 nextarg:
     cmp     rcx, 0              ; check if we have 0 arguments
