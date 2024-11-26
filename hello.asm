@@ -14,26 +14,22 @@ section .text
 global  _start
 
 _start:
-    mov     rax, msg1
-    call    sprint
+    mov     rcx, 0              ; set rcx to 0
 
-    mov     rdi, 0              ; file descriptor for standard input
-    mov     rsi, sinput         ; buffer to store input
-    mov     rdx, 255            ; how many bytes to read
-    mov     rax, 3              ; read syscall
-    syscall
+nextnumber:
+    inc     rcx                 ; increment
 
-    mov     rax, msg2
-    call    sprint
+    mov     rax, rcx            ; store rcx in rax
+    add     rax, 48             ; add 48, 0 is 48 in ASCII, 1 is 49 and so on...
+    push    rax                 ; push rax to the stack so we can get the address in the next instruction
+    mov     rax, rsp
 
-    mov     rax, sinput
-    call    sprint
+    push    rcx                 ; store rcx
+    call    sprintlf            ; print number
+    pop     rcx                 ; restore rcx
+
+    pop     rax
+    cmp     rcx, 10
+    jne     nextnumber
 
     call    exit
-
-section .data
-msg1        db      'Enter your name: ', 0
-msg2        db      'Hello, ', 0
-
-section .bss
-sinput:     resb    255         ; reserve 255 byte space for the user input string
