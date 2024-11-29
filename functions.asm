@@ -55,6 +55,44 @@ sprintlf:
     pop     rax                 ; restore original rax
     ret
 
+;;; print integer (itoa)
+;;; iprint(int number)
+iprint:
+    push    rax
+    push    rcx
+    push    rdx
+    push    rsi
+    mov     rcx, 0              ; how many bytes we need to print
+
+divideloop:
+    inc     rcx
+
+    mov     rdx, 0              ; reminder is stored here
+    mov     rsi, 10             ; we want to divide by 10
+    idiv    rsi                 ; idiv divides rax by rsi, quotient part is in rax, reminder in rdx
+
+    add     rdx, 48             ; convert rdx to it's ASCII representation
+    push    rdx                 ; push string representation onto the stack
+    cmp     rax, 0              ; can we divide again?
+    jnz     divideloop
+
+printloop:
+    dec     rcx
+
+    mov     rax, rsp            ; move the stack pointer into rax for printing
+    push    rcx
+    call    sprint
+    pop     rcx
+    pop     rax
+    cmp     rcx, 0              ; did we print everything?
+    jnz     printloop
+
+    pop     rsi
+    pop     rdx
+    pop     rcx
+    pop     rax
+    ret
+
 ;;; exit program
 exit:
     mov     rax, 1              ; exit syscall
