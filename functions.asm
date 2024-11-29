@@ -93,6 +93,20 @@ printloop:
     pop     rax
     ret
 
+iprintlf:
+    call    iprint
+
+    push    rax                 ; store current value
+
+    mov     rax, 10
+    push    rax
+    mov     rax, rsp            ; point to memory where we store 10 (line feed)
+    call    sprint
+
+    pop     rax
+    pop     rax
+    ret
+
 ;;; exit program
 exit:
     mov     rax, 1              ; exit syscall

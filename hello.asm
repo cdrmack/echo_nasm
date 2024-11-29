@@ -15,13 +15,7 @@ global  _start
 
 _start:
     mov     rax, 123
-    call    iprint
-
-    mov     rax, 0
-    push    rax
-    mov     rax, rsp
-    call    sprintlf
-
+    call    iprintlf
     call    exit
 
 ;; _start:
