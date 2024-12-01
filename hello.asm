@@ -14,9 +14,9 @@ section .text
 global  _start
 
 _start:
-    mov     rax, 20
-    mov     rbx, 22
-    add     rax, rbx
+    mov     rax, 22
+    mov     rbx, 20
+    sub     rax, rbx
 
     call    iprintlf
     call    exit
