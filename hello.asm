@@ -14,17 +14,9 @@ section .text
 global  _start
 
 _start:
-    mov     rcx, 0              ; set rcx to 0
+    mov     rax, 20
+    mov     rbx, 22
+    add     rax, rbx
 
-nextnumber:
-    inc     rcx                 ; increment
-
-    mov     rax, rcx            ; store rcx in rax
-    push    rcx
-    call    iprintlf            ; print digit
-    pop     rcx
-
-    cmp     rcx, 10
-    jne     nextnumber
-
+    call    iprintlf
     call    exit
