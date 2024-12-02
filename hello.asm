@@ -14,9 +14,18 @@ section .text
 global  _start
 
 _start:
-    mov     rax, 2
+    mov     rax, 42
     mov     rbx, 4
-    mul     rbx
+    div     rbx                 ; divide rax by rbx
+    call    iprint              ; print quotient
 
+    mov     rax, msg1
+    call    sprint
+
+    mov     rax, rdx            ; move remainder into rax
     call    iprintlf
+
     call    exit
+
+section .data
+msg1    db  ' remainder ', 0
