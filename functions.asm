@@ -20,6 +20,7 @@ finished:
 ;;; print string
 ;;; expects address of string in rax
 sprint:
+    push    rcx
     push    rdx
     push    rdi
     push    rsi
@@ -37,6 +38,7 @@ sprint:
     pop     rsi
     pop     rdi
     pop     rdx
+    pop     rcx
     ret
 
 ;;; print string with line feed
