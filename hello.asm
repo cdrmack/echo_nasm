@@ -14,18 +14,30 @@ section .text
 global  _start
 
 _start:
-    mov     rax, 42
-    mov     rbx, 4
-    div     rbx                 ; divide rax by rbx
-    call    iprint              ; print quotient
+    ;; there might be some rsp alignment going on
+    ;; argc migh be at [rsp] or [rsp+8]
+    ;; I assume it was aligned if rsp stores 0 or a "big" number
+    pop     rcx
 
-    mov     rax, msg1
+    cmp     rcx, 0
+    jz      aligned
+
+    cmp     rcx, 10
+    jg      aligned             ; if greater than 10 then I assume it's garbage
+
+    jmp     stuff
+
+aligned:
+    pop     rcx
+
+stuff:
+    mov     rax, msg
     call    sprint
 
-    mov     rax, rdx            ; move remainder into rax
+    mov     rax, rcx
     call    iprintlf
 
     call    exit
 
-section .data
-msg1    db  ' remainder ', 0
+.data:
+msg     db      'Number of arguments: ', 0
