@@ -8,7 +8,7 @@
 ;;; rdi, rsi, rdx, r10, r8, r9
 ;;; Syscall number is placed in rax.
 
-%include    'functions.asm'
+%include 'functions.asm'
 
 section .text
 global  _start
@@ -16,21 +16,15 @@ global  _start
 _start:
     ;; there might be some rsp alignment going on
     ;; argc migh be at [rsp] or [rsp+8]
-    ;; I assume it was aligned if rsp stores 0 or a "big" number
+    ;; [rdi] returns the correct number of arguments
+    ;; by comparing rdi with rsp I can tell where argc is
+    sub     rdi, rsp
+    jz      stuff
     pop     rcx
-
-    cmp     rcx, 0
-    jz      aligned
-
-    cmp     rcx, 10
-    jg      aligned             ; if greater than 10 then I assume it's garbage
-
-    jmp     stuff
-
-aligned:
-    pop     rcx
+    jz      stuff
 
 stuff:
+    pop     rcx                 ; store argc (top of the stack) in rcx
     mov     rax, msg
     call    sprint
 
@@ -40,4 +34,4 @@ stuff:
     call    exit
 
 .data:
-msg     db      'Number of arguments: ', 0
+msg db 'Number of arguments: ', 0
