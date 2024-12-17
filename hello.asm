@@ -25,13 +25,13 @@ _start:
 
 stuff:
     pop     rcx                 ; store argc (top of the stack) in rcx
-    mov     rax, msg
-    call    sprint
+    pop     rdx                 ; store proram name
+    sub     rcx, 1              ; decrease rcx by 1, ignore program name
+
+    mov     rax, rdx
+    call    sprintlf            ; print program name
 
     mov     rax, rcx
-    call    iprintlf
+    call    iprintlf            ; print argc - 1
 
     call    exit
-
-.data:
-msg db 'Number of arguments: ', 0
