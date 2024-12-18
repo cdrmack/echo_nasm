@@ -25,7 +25,7 @@ _start:
 
 stuff:
     pop     rcx                 ; store argc (top of the stack) in rcx
-    pop     rdx                 ; store proram name
+    pop     rdx                 ; store program name
     sub     rcx, 1              ; decrease rcx by 1, ignore program name
 
     mov     rax, rdx
@@ -33,5 +33,15 @@ stuff:
 
     mov     rax, rcx
     call    iprintlf            ; print argc - 1
+
+    ;; mov     rax, msg            ; rax stores pointer to msg
+    mov     rax, 8
+
+    mov     rdx, 0              ; reminder is stored here
+    mov     rsi, 10             ; we want to divide by 10
+    idiv    rsi                 ; divide rax by rsi, quotient part is in rax, reminder in rdx
+
+    add     rdx, 48             ; convert rdx to it's ASCII representation, start of atoi
+    mov     rax, rdx            ; move reminder to rax
 
     call    exit
