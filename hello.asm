@@ -34,14 +34,31 @@ stuff:
     mov     rax, rcx
     call    iprintlf            ; print argc - 1
 
+    ;; push    0
+    ;; push    '---'
+    ;; mov     rax, rsp
+    ;; call    sprintlf
+
+nextarg:
+    cmp     rcx, 0
+    jz      nomoreargs
+
+    pop     rax                 ; move argument from stack to rax
+    call    sprintlf
+
+    sub     rcx, 1
+    jmp     nextarg
+
+
     ;; mov     rax, msg            ; rax stores pointer to msg
-    mov     rax, 8
+    ;; mov     rax, 8
 
-    mov     rdx, 0              ; reminder is stored here
-    mov     rsi, 10             ; we want to divide by 10
-    idiv    rsi                 ; divide rax by rsi, quotient part is in rax, reminder in rdx
+    ;; mov     rdx, 0              ; reminder is stored here
+    ;; mov     rsi, 10             ; we want to divide by 10
+    ;; idiv    rsi                 ; divide rax by rsi, quotient part is in rax, reminder in rdx
 
-    add     rdx, 48             ; convert rdx to it's ASCII representation, start of atoi
-    mov     rax, rdx            ; move reminder to rax
+    ;; add     rdx, 48             ; convert rdx to it's ASCII representation, start of atoi
+    ;; mov     rax, rdx            ; move reminder to rax
 
+nomoreargs:
     call    exit
