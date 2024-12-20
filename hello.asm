@@ -39,26 +39,41 @@ stuff:
     ;; mov     rax, rsp
     ;; call    sprintlf
 
-nextarg:
-    cmp     rcx, 0
-    jz      nomoreargs
+    pop     rax                 ; rax should point to string (program argument)
+    ;; xor     rbx, rbx            ; reset lower and upper bytes
+    mov     bl, [rax]           ; store actual data in rbx
+    cmp     bl, 48              ; 48 is ascii value for 0
+    jl      done                ; jump if less
+    cmp     bl, 57              ; 57 is ascii value for 9
+    jg      done                ; jump if greater
 
-    pop     rax                 ; move argument from stack to rax
-    call    sprintlf
+    sub     bl, 48              ; convert ascii to decimal representation
+    mov     rax, rbx
+    call    iprintlf
 
-    sub     rcx, 1
-    jmp     nextarg
-
-
-    ;; mov     rax, msg            ; rax stores pointer to msg
-    ;; mov     rax, 8
-
-    ;; mov     rdx, 0              ; reminder is stored here
-    ;; mov     rsi, 10             ; we want to divide by 10
-    ;; idiv    rsi                 ; divide rax by rsi, quotient part is in rax, reminder in rdx
-
-    ;; add     rdx, 48             ; convert rdx to it's ASCII representation, start of atoi
-    ;; mov     rax, rdx            ; move reminder to rax
-
-nomoreargs:
+done:
     call    exit
+
+;; nextarg:
+;;     cmp     rcx, 0
+;;     jz      nomoreargs
+
+;;     pop     rax                 ; move argument from stack to rax
+;;     call    atoi
+
+;;     sub     rcx, 1
+;;     jmp     nextarg
+
+
+;;     ;; mov     rax, msg            ; rax stores pointer to msg
+;;     ;; mov     rax, 8
+
+;;     ;; mov     rdx, 0              ; reminder is stored here
+;;     ;; mov     rsi, 10             ; we want to divide by 10
+;;     ;; idiv    rsi                 ; divide rax by rsi, quotient part is in rax, reminder in rdx
+
+;;     ;; add     rdx, 48             ; convert rdx to it's ASCII representation, start of atoi
+;;     ;; mov     rax, rdx            ; move reminder to rax
+
+;; nomoreargs:
+;;     call    exit
