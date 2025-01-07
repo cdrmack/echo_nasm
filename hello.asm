@@ -29,24 +29,25 @@ stuff:
     dec     rcx                 ; decrease rcx by 1 (ignore program name)
     jz      done                ; exit if there were no args
 
-poparg:
     pop     rax                 ; store address of string (program argument)
+    mov     rcx, 0              ; counter to keep track of digits
+    xor     rdx, rdx
 
-    ;; atoi start
+nextdigit:
     xor     rbx, rbx            ; reset lower and upper bytes
-    mov     bl, [rax]           ; store actual data in rbx
+    mov     bl, [rax+rcx]       ; store actual data in rbx
     cmp     bl, 48              ; 48 is ascii value for 0
     jl      done                ; jump if less
     cmp     bl, 57              ; 57 is ascii value for 9
     jg      done                ; jump if greater
 
     sub     bl, 48              ; convert ascii to decimal representation
-    mov     rax, rbx
-    call    iprintlf
-    ;; atoi end
+    add     rdx, rbx
 
-    dec     rcx
-    jnz     poparg
+    inc     rcx
+    jmp     nextdigit
 
 done:
+    mov     rax, rdx
+    call    iprintlf
     call    exit
