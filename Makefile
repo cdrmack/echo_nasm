@@ -1,15 +1,16 @@
-EXE = hello
-SOURCES = hello.asm
-OBJS = hello.o
+# store all .asm files
+ASM_FILES := $(wildcard *.asm)
 
-all: $(EXE)
-	@echo $(EXE) build complete
+# extract base names (ignore extension)
+TARGETS := $(basename $(ASM_FILES))
 
-hello.o: hello.asm
-	nasm -g -f elf64 hello.asm -o hello.o
+all: $(TARGETS)
 
-$(EXE): hello.o
-	ld hello.o -o hello
+$(TARGETS): %: %.o
+	ld $< -o $@
+
+%.o: %.asm
+	nasm -g -f elf64 $< -o $@
 
 clean:
-	rm -f $(EXE) $(OBJS)
+	rm -f $(TARGETS) *.o
