@@ -1,5 +1,5 @@
-# store all .asm files
-ASM_FILES := $(wildcard *.asm)
+# store all .asm files (except functions.asm)
+ASM_FILES := $(filter-out functions.asm, $(wildcard *.asm))
 
 # extract base names (ignore extension)
 TARGETS := $(basename $(ASM_FILES))
